@@ -1,0 +1,1575 @@
+/* ==========================================================================
+   BELLY'S KITCHEN - TOUR DE TABLE
+   Master Editorial Digital Cookbook CSS
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Root Variables & Theme Palette
+   -------------------------------------------------------------------------- */
+:root {
+  --bg-cream: #fdfbf7;
+  --bg-vanilla: #f7f3e9;
+  --bg-parchment: #f0e8d5;
+  --bg-parchment-dark: #e6dac3;
+  --text-dark: #2c221e;
+  --text-muted: #6e6057;
+  --text-light: #fbf9f5;
+  
+  --terracotta: #c85a32;
+  --terracotta-dark: #a84522;
+  --terracotta-light: #e87a54;
+  
+  --olive: #556b2f;
+  --olive-dark: #3f5122;
+  --olive-light: #7a9348;
+  
+  --sage: #8a9a86;
+  --sage-light: #c2ccc0;
+  
+  --wood-dark: #3e2723;
+  --wood-medium: #5c3d2e;
+  --wood-light: #8b5a2b;
+  
+  --mustard: #d49b35;
+  --mustard-light: #f3c76b;
+  
+  --paper-shadow: 0 12px 30px -8px rgba(62, 39, 35, 0.12);
+  --card-shadow: 0 16px 36px -10px rgba(44, 34, 30, 0.15);
+  --hover-shadow: 0 22px 45px -12px rgba(44, 34, 30, 0.22);
+  
+  --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-handwriting: 'Caveat', cursive, 'Brush Script MT';
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  --transition-smooth: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & General Normalization
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  text-size-adjust: 100%;
+}
+
+body.cookbook-body {
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ambient Grain & Vignette Overlay */
+.paper-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.vignette-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 998;
+  box-shadow: inset 0 0 100px rgba(62, 39, 35, 0.08);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-vanilla);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--wood-medium);
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--bg-vanilla);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--terracotta);
+}
+
+/* --------------------------------------------------------------------------
+   3. Typography & Helper Utilities
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-serif);
+  color: var(--wood-dark);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+a {
+  color: var(--terracotta);
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
+
+a:hover {
+  color: var(--terracotta-dark);
+}
+
+.text-center { text-align: center; }
+
+/* Paper Card Container Utility */
+.paper-card {
+  background-color: var(--bg-vanilla);
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(240,232,213,0.3) 100%);
+  border: 1px solid rgba(139, 90, 43, 0.15);
+  border-radius: var(--radius-md);
+  box-shadow: var(--paper-shadow);
+  position: relative;
+}
+
+/* Tape Strip Decorative Element */
+.tape-strip {
+  position: absolute;
+  width: 90px;
+  height: 26px;
+  background: rgba(242, 235, 217, 0.75);
+  border: 1px solid rgba(212, 195, 155, 0.5);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transform: rotate(-3deg);
+  z-index: 10;
+  backdrop-filter: blur(1px);
+}
+.tape-strip.top-tape { top: -12px; left: 50%; transform: translateX(-50%) rotate(-1deg); }
+.tape-strip.top-center { top: -12px; left: 50%; transform: translateX(-50%) rotate(2deg); }
+.tape-strip.top-left { top: -12px; left: 15px; transform: rotate(-5deg); }
+.tape-strip.top-right { top: -12px; right: 15px; transform: rotate(4deg); }
+
+/* Buttons */
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 26px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-bounce);
+  border: none;
+  white-space: nowrap;
+}
+
+.primary-cta {
+  background-color: var(--terracotta);
+  color: var(--text-light);
+  box-shadow: 0 4px 15px rgba(200, 90, 50, 0.3);
+}
+.primary-cta:hover {
+  background-color: var(--terracotta-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(200, 90, 50, 0.4);
+}
+
+.secondary-cta {
+  background-color: var(--olive);
+  color: var(--text-light);
+}
+.secondary-cta:hover {
+  background-color: var(--olive-dark);
+  transform: translateY(-2px);
+}
+
+.outline-cta {
+  background: transparent;
+  color: var(--wood-dark);
+  border: 1.5px solid var(--wood-medium);
+}
+.outline-cta:hover {
+  background-color: var(--wood-dark);
+  color: var(--text-light);
+}
+
+/* --------------------------------------------------------------------------
+   4. Entrance Loading Curtain & Book Opening Splash
+   -------------------------------------------------------------------------- */
+.loading-curtain {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: var(--wood-dark);
+  background-image: radial-gradient(circle, rgba(92, 61, 46, 0.8) 0%, rgba(44, 34, 30, 1) 100%);
+  color: var(--bg-parchment);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.loading-curtain.dismissed {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.curtain-content {
+  max-width: 480px;
+  padding: 40px;
+}
+
+.wax-seal {
+  width: 90px;
+  height: 90px;
+  background-color: var(--terracotta);
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.3), 0 8px 25px rgba(0,0,0,0.4);
+  border: 3px dashed rgba(255,255,255,0.3);
+  animation: pulse-seal 2s infinite ease-in-out;
+}
+@keyframes pulse-seal {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.seal-icon { font-size: 2rem; }
+.seal-text { font-family: var(--font-handwriting); font-size: 0.8rem; color: var(--bg-cream); margin-top: -2px; }
+
+.curtain-title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  color: var(--bg-cream);
+  margin-bottom: 8px;
+}
+
+.curtain-subtitle {
+  font-family: var(--font-handwriting);
+  font-size: 1.4rem;
+  color: var(--mustard-light);
+  margin-bottom: 30px;
+}
+
+.loading-bar-container {
+  width: 100%;
+  height: 6px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.loading-bar {
+  width: 0%;
+  height: 100%;
+  background: var(--mustard);
+  transition: width 0.3s ease;
+}
+
+.open-cookbook-btn {
+  background-color: var(--terracotta);
+  color: var(--text-light);
+  border: none;
+  padding: 14px 32px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--transition-bounce);
+}
+.open-cookbook-btn:hover {
+  background-color: var(--terracotta-light);
+  transform: scale(1.05);
+}
+.open-cookbook-btn.hidden { display: none; }
+
+/* --------------------------------------------------------------------------
+   5. Header & Navigation
+   -------------------------------------------------------------------------- */
+.main-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: rgba(253, 251, 247, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(139, 90, 43, 0.15);
+  box-shadow: 0 4px 20px rgba(62, 39, 35, 0.05);
+  transition: var(--transition-smooth);
+}
+
+.header-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand-seal {
+  width: 38px;
+  height: 38px;
+  background-color: var(--terracotta);
+  color: var(--text-light);
+  font-family: var(--font-serif);
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+.brand-text { display: flex; flex-direction: column; }
+.brand-name { font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; color: var(--wood-dark); line-height: 1; }
+.brand-tagline { font-family: var(--font-handwriting); font-size: 0.95rem; color: var(--terracotta); }
+
+/* Desktop Navigation */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+.nav-item {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  position: relative;
+  padding: 6px 2px;
+}
+.nav-item:hover, .nav-item.active {
+  color: var(--terracotta);
+}
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; width: 0%; height: 2px;
+  background-color: var(--terracotta);
+  transition: var(--transition-smooth);
+}
+.nav-item.active::after, .nav-item:hover::after {
+  width: 100%;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-btn {
+  background: var(--bg-parchment);
+  border: 1px solid rgba(139, 90, 43, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--wood-dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition-smooth);
+}
+.header-btn:hover {
+  background: var(--terracotta);
+  color: var(--text-light);
+  border-color: var(--terracotta);
+}
+
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.mobile-menu-btn span {
+  width: 24px;
+  height: 2px;
+  background-color: var(--wood-dark);
+  transition: var(--transition-smooth);
+}
+
+/* --------------------------------------------------------------------------
+   6. Table of Contents & Mobile Navigation Overlays
+   -------------------------------------------------------------------------- */
+.toc-drawer {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 2000;
+  visibility: hidden;
+  opacity: 0;
+  transition: var(--transition-smooth);
+}
+.toc-drawer.open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.toc-backdrop {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(44, 34, 30, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.toc-content {
+  position: absolute;
+  top: 0; right: 0; width: 100%; max-width: 420px; height: 100%;
+  background-color: var(--bg-vanilla);
+  box-shadow: -10px 0 30px rgba(0,0,0,0.2);
+  padding: 30px;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.toc-drawer.open .toc-content {
+  transform: translateX(0);
+}
+
+.toc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--wood-light);
+  margin-bottom: 24px;
+}
+.toc-header h3 { font-size: 1.6rem; }
+.close-btn { background: none; border: none; font-size: 2rem; cursor: pointer; color: var(--wood-dark); }
+
+.toc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.toc-link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-cream);
+  border: 1px solid rgba(139, 90, 43, 0.1);
+  transition: var(--transition-smooth);
+}
+.toc-link:hover {
+  background: var(--terracotta);
+  color: var(--text-light);
+}
+.toc-num {
+  font-family: var(--font-handwriting);
+  font-size: 1.2rem;
+  color: var(--terracotta);
+  font-weight: 700;
+}
+.toc-link:hover .toc-num { color: var(--bg-cream); }
+.toc-title { font-family: var(--font-serif); font-size: 1.15rem; font-weight: 600; }
+
+/* Mobile Nav Drawer */
+.mobile-nav {
+  position: fixed;
+  top: 60px; left: 0; width: 100%; height: calc(100vh - 60px);
+  background-color: var(--bg-vanilla);
+  z-index: 1500;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: var(--transition-smooth);
+}
+.mobile-nav.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.mobile-nav-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.mobile-nav-link {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--wood-dark);
+  border-bottom: 1px dashed rgba(139, 90, 43, 0.2);
+  padding-bottom: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   7. Main Layout & Storytelling Chapters
+   -------------------------------------------------------------------------- */
+.cookbook-main {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 40px 20px 100px;
+}
+
+.chapter-section {
+  margin-bottom: 120px;
+  position: relative;
+}
+
+.chapter-stamp {
+  font-family: var(--font-handwriting);
+  font-size: 1.5rem;
+  color: var(--terracotta);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.chapter-header {
+  margin-bottom: 40px;
+}
+.chapter-tag {
+  font-family: var(--font-handwriting);
+  font-size: 1.4rem;
+  color: var(--olive);
+  display: block;
+  margin-bottom: 4px;
+}
+.chapter-title {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  color: var(--wood-dark);
+  margin-bottom: 12px;
+}
+.chapter-intro {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 680px;
+}
+
+/* --------------------------------------------------------------------------
+   8. Chapter I: Cover Page
+   -------------------------------------------------------------------------- */
+.cover-chapter {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.cover-wrapper {
+  width: 100%;
+  max-width: 900px;
+  perspective: 1200px;
+}
+
+.book-cover-3d {
+  background-color: var(--wood-dark);
+  background-image: linear-gradient(135deg, var(--wood-medium) 0%, var(--wood-dark) 100%);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: 0 30px 60px rgba(44, 34, 30, 0.35), inset 0 0 15px rgba(0,0,0,0.5);
+  border: 3px solid var(--wood-light);
+  position: relative;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.book-cover-3d:hover {
+  transform: rotateY(-3deg) rotateX(2deg) translateY(-5px);
+}
+
+.cover-face {
+  background-color: var(--bg-parchment);
+  border-radius: var(--radius-md);
+  padding: 40px;
+  border: 1px solid rgba(139, 90, 43, 0.3);
+  position: relative;
+  text-align: center;
+}
+
+.cover-border {
+  border: 2px double var(--wood-light);
+  padding: 30px 20px;
+  border-radius: var(--radius-sm);
+  position: relative;
+}
+
+.corner-ornament {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--terracotta);
+}
+.corner-ornament.top-left { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+.corner-ornament.top-right { top: 8px; right: 8px; border-left: none; border-bottom: none; }
+.corner-ornament.bottom-left { bottom: 8px; left: 8px; border-right: none; border-top: none; }
+.corner-ornament.bottom-right { bottom: 8px; right: 8px; border-left: none; border-top: none; }
+
+.handwritten-eyebrow {
+  font-family: var(--font-handwriting);
+  font-size: 1.4rem;
+  color: var(--terracotta);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.cover-title {
+  font-size: clamp(3rem, 7vw, 5rem);
+  color: var(--wood-dark);
+  letter-spacing: -1px;
+}
+
+.cover-divider {
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.divider-leaf { font-size: 1.5rem; color: var(--olive); }
+
+.cover-subtitle {
+  font-family: var(--font-handwriting);
+  font-size: 2.2rem;
+  color: var(--olive-dark);
+  margin-bottom: 12px;
+}
+
+.cover-tagline {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto 30px;
+}
+
+.cover-illustration {
+  position: relative;
+  max-width: 580px;
+  margin: 0 auto 30px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--paper-shadow);
+  border: 4px solid var(--bg-cream);
+}
+.cover-img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  display: block;
+}
+.handwritten-note-overlay {
+  position: absolute;
+  bottom: 12px; right: 12px;
+  background-color: var(--bg-vanilla);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-handwriting);
+  font-size: 1.1rem;
+  color: var(--wood-dark);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.cover-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.scroll-indicator {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--wood-medium);
+  font-family: var(--font-handwriting);
+  font-size: 1.3rem;
+  animation: bounce 2s infinite;
+}
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-8px); }
+  60% { transform: translateY(-4px); }
+}
+
+/* --------------------------------------------------------------------------
+   9. Chapter II: Today's Favorite Recipe Spotlight
+   -------------------------------------------------------------------------- */
+.spotlight-card {
+  padding: 40px;
+}
+
+.spotlight-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.spotlight-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.polaroid-frame {
+  background: var(--bg-cream);
+  padding: 16px 16px 28px;
+  border-radius: 4px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  border: 1px solid rgba(0,0,0,0.06);
+  position: relative;
+  transform: rotate(-1.5deg);
+  transition: var(--transition-bounce);
+}
+.polaroid-frame:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+.polaroid-img {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+  border-radius: 2px;
+  display: block;
+}
+
+.polaroid-caption {
+  margin-top: 16px;
+  text-align: center;
+}
+.caption-handwritten {
+  font-family: var(--font-handwriting);
+  font-size: 1.35rem;
+  color: var(--wood-dark);
+}
+
+.recipe-meta-ribbon {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  background: var(--bg-parchment);
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(139, 90, 43, 0.15);
+  text-align: center;
+}
+.meta-item { display: flex; flex-direction: column; align-items: center; }
+.meta-icon { font-size: 1.2rem; }
+.meta-val { font-weight: 700; font-size: 0.95rem; color: var(--wood-dark); }
+.meta-lbl { font-size: 0.75rem; color: var(--text-muted); }
+
+.spotlight-details {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.handwritten-annotation {
+  font-family: var(--font-handwriting);
+  font-size: 1.4rem;
+  color: var(--terracotta);
+}
+
+.recipe-main-title {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  color: var(--wood-dark);
+}
+
+.recipe-description {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+}
+
+/* Servings Adjuster */
+.servings-calculator {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: var(--bg-cream);
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(139, 90, 43, 0.15);
+  width: fit-content;
+}
+.calc-label { font-weight: 600; font-size: 0.95rem; color: var(--wood-dark); }
+.calc-controls { display: flex; align-items: center; gap: 10px; }
+.calc-btn {
+  width: 32px; height: 32px;
+  background: var(--terracotta);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: var(--transition-smooth);
+}
+.calc-btn:hover { background: var(--terracotta-dark); }
+.servings-count { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; min-width: 24px; text-align: center; }
+.servings-unit { font-size: 0.85rem; color: var(--text-muted); }
+
+/* Ingredients Checklist */
+.ingredients-box {
+  background: var(--bg-cream);
+  padding: 24px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(139, 90, 43, 0.15);
+}
+.box-title {
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.title-accent { font-family: var(--font-handwriting); font-size: 1.1rem; color: var(--terracotta); font-weight: 400; }
+
+.ingredients-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ingredient-check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  cursor: pointer;
+}
+.ingredient-check input { display: none; }
+.custom-check {
+  width: 20px; height: 20px;
+  border: 2px solid var(--wood-medium);
+  border-radius: 4px;
+  display: inline-block;
+  position: relative;
+  transition: var(--transition-smooth);
+}
+.ingredient-check input:checked + .custom-check {
+  background-color: var(--olive);
+  border-color: var(--olive);
+}
+.ingredient-check input:checked + .custom-check::after {
+  content: '✓';
+  position: absolute;
+  top: -2px; left: 3px;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.ingredient-check input:checked ~ .ing-name {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+.ing-qty { font-weight: 700; color: var(--terracotta); }
+
+.spotlight-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   10. Chapter III: Belly's Handwritten Notebook
+   -------------------------------------------------------------------------- */
+.notebook-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.sticky-note {
+  padding: 26px;
+  border-radius: 4px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  position: relative;
+  transition: var(--transition-bounce);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px;
+}
+.sticky-note:nth-child(even) { transform: rotate(1.5deg); }
+.sticky-note:nth-child(odd) { transform: rotate(-1.5deg); }
+.sticky-note:hover {
+  transform: rotate(0deg) scale(1.03);
+  z-index: 10;
+}
+
+.note-pin {
+  width: 14px; height: 14px;
+  background-color: #d32f2f;
+  border-radius: 50%;
+  position: absolute;
+  top: 12px; left: 50%; transform: translateX(-50%);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.note-terracotta { background-color: #fbe9e7; border: 1px solid #ffccbc; }
+.note-olive { background-color: #f1f8e9; border: 1px solid #dedefa; }
+.note-mustard { background-color: #fffde7; border: 1px solid #fff9c4; }
+.note-sage { background-color: #f3f7f2; border: 1px solid #dcedc8; }
+
+.note-date { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 10px; }
+.note-title { font-family: var(--font-serif); font-size: 1.3rem; color: var(--wood-dark); margin: 6px 0; }
+.note-body { font-family: var(--font-handwriting); font-size: 1.35rem; color: var(--text-dark); line-height: 1.35; }
+.note-signature { font-family: var(--font-handwriting); font-size: 1.2rem; color: var(--terracotta); text-align: right; margin-top: 12px; }
+
+/* Add Note Box */
+.add-note-box {
+  padding: 30px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+.add-note-header { margin-bottom: 20px; }
+.add-note-header h3 { font-size: 1.4rem; }
+.add-note-header p { font-size: 0.95rem; color: var(--text-muted); }
+
+.add-note-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.paper-input, .paper-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: var(--bg-cream);
+  border: 1px solid rgba(139, 90, 43, 0.2);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  transition: var(--transition-smooth);
+}
+.paper-input:focus, .paper-textarea:focus {
+  outline: none;
+  border-color: var(--terracotta);
+  box-shadow: 0 0 0 3px rgba(200, 90, 50, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   11. Chapter IV: Polaroid Gallery & Memories
+   -------------------------------------------------------------------------- */
+.gallery-filter-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: var(--bg-vanilla);
+  border: 1px solid rgba(139, 90, 43, 0.2);
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--wood-dark);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.filter-btn.active, .filter-btn:hover {
+  background: var(--terracotta);
+  color: var(--text-light);
+  border-color: var(--terracotta);
+}
+
+.polaroid-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 28px;
+}
+
+.polaroid-item {
+  background: var(--bg-cream);
+  padding: 14px 14px 22px;
+  border-radius: 4px;
+  box-shadow: var(--paper-shadow);
+  border: 1px solid rgba(0,0,0,0.06);
+  position: relative;
+  cursor: pointer;
+  transition: var(--transition-bounce);
+}
+.polaroid-item:nth-child(3n+1) { transform: rotate(-2deg); }
+.polaroid-item:nth-child(3n+2) { transform: rotate(1.5deg); }
+.polaroid-item:nth-child(3n) { transform: rotate(-1deg); }
+
+.polaroid-item:hover {
+  transform: rotate(0deg) scale(1.05);
+  box-shadow: var(--hover-shadow);
+  z-index: 20;
+}
+
+.polaroid-item .polaroid-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.polaroid-label {
+  font-family: var(--font-handwriting);
+  font-size: 1.25rem;
+  color: var(--wood-dark);
+  text-align: center;
+  margin-top: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   12. Chapter V: Around the Family Table
+   -------------------------------------------------------------------------- */
+.table-story-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.table-hero-image {
+  position: relative;
+  height: 480px;
+  width: 100%;
+}
+.table-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.image-gradient-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(44,34,30,0.85) 100%);
+}
+
+.table-quote-overlay {
+  position: absolute;
+  bottom: 40px; left: 40px; right: 40px;
+  color: var(--bg-cream);
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-style: italic;
+  line-height: 1.35;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.table-deck-section {
+  padding: 40px;
+  background-color: var(--bg-vanilla);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+.deck-info h3 { font-size: 1.6rem; margin-bottom: 6px; }
+.deck-info p { color: var(--text-muted); font-size: 1rem; }
+
+.deck-card-container {
+  max-width: 420px;
+  width: 100%;
+}
+
+.deck-card {
+  background: var(--bg-cream);
+  border: 2px dashed var(--terracotta);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  text-align: center;
+  box-shadow: var(--paper-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+.deck-card-number { font-family: var(--font-handwriting); font-size: 1.2rem; color: var(--terracotta); font-weight: 700; }
+.deck-card-text { font-family: var(--font-serif); font-size: 1.25rem; color: var(--wood-dark); font-style: italic; }
+
+/* --------------------------------------------------------------------------
+   13. Chapter VI: Artisanal Pantry
+   -------------------------------------------------------------------------- */
+.pantry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.pantry-card {
+  background: var(--bg-vanilla);
+  border: 1px solid rgba(139, 90, 43, 0.15);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  box-shadow: var(--paper-shadow);
+  transition: var(--transition-bounce);
+  position: relative;
+  overflow: hidden;
+}
+.pantry-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--hover-shadow);
+  border-color: var(--terracotta);
+}
+
+.pantry-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.pantry-title { font-size: 1.35rem; color: var(--wood-dark); margin-bottom: 4px; }
+.pantry-origin { font-family: var(--font-handwriting); font-size: 1.15rem; color: var(--olive); margin-bottom: 10px; }
+.pantry-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 16px; }
+.pantry-tag {
+  display: inline-block;
+  background: var(--bg-parchment);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--wood-medium);
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   14. Chapter VII: Daily Timeline
+   -------------------------------------------------------------------------- */
+.timeline-container {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.timeline-line {
+  position: absolute;
+  top: 0; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 3px;
+  background: var(--wood-light);
+  opacity: 0.3;
+}
+
+.timeline-step {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 50%;
+  position: relative;
+  margin-bottom: 40px;
+}
+.timeline-step:nth-child(even) {
+  justify-content: flex-start;
+  padding-right: 0;
+  padding-left: 50%;
+}
+
+.timeline-badge {
+  position: absolute;
+  top: 20px; left: 50%; transform: translateX(-50%);
+  background: var(--terracotta);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.timeline-content {
+  padding: 24px;
+  margin: 0 30px;
+  max-width: 340px;
+}
+.timeline-icon { font-size: 2rem; margin-bottom: 8px; }
+.timeline-content h3 { font-size: 1.3rem; margin-bottom: 6px; }
+.timeline-content p { font-size: 0.95rem; color: var(--text-muted); }
+
+/* --------------------------------------------------------------------------
+   15. Chapter VIII: The Recipe Vault (3D Cards)
+   -------------------------------------------------------------------------- */
+.vault-controls {
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.search-box-wrapper {
+  position: relative;
+  max-width: 500px;
+}
+.search-icon {
+  position: absolute;
+  left: 16px; top: 50%; transform: translateY(-50%);
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+.search-input {
+  width: 100%;
+  padding: 14px 16px 14px 46px;
+  background-color: var(--bg-vanilla);
+  border: 1px solid rgba(139, 90, 43, 0.2);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--text-dark);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+}
+
+.vault-category-tabs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.vault-tab {
+  background: var(--bg-vanilla);
+  border: 1px solid rgba(139, 90, 43, 0.2);
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--wood-dark);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.vault-tab.active, .vault-tab:hover {
+  background: var(--terracotta);
+  color: white;
+  border-color: var(--terracotta);
+}
+
+.recipe-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 32px;
+}
+
+/* 3D Card Flip Styling */
+.recipe-card-3d {
+  perspective: 1000px;
+  height: 460px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.recipe-card-3d.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-badge {
+  position: absolute;
+  top: 30px; left: 30px;
+  background: var(--terracotta);
+  color: white;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  z-index: 10;
+}
+
+.card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+.card-title { font-size: 1.35rem; color: var(--wood-dark); }
+.card-snippet { font-size: 0.9rem; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.card-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--wood-medium);
+  margin-top: 4px;
+}
+
+.flip-btn, .flip-btn-back {
+  background: none;
+  border: 1px dashed var(--wood-light);
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--wood-dark);
+  cursor: pointer;
+  margin-top: 8px;
+  transition: var(--transition-smooth);
+}
+.flip-btn:hover, .flip-btn-back:hover {
+  background: var(--bg-parchment);
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  background-color: var(--bg-parchment);
+  border: 2px solid var(--wood-light);
+}
+.card-back-title { font-size: 1.4rem; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 8px; }
+.card-back-list { list-style: none; font-size: 0.95rem; color: var(--text-dark); display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+.card-back-note { font-family: var(--font-handwriting); font-size: 1.2rem; color: var(--terracotta); margin-bottom: 12px; }
+.card-back-actions { display: flex; flex-direction: column; gap: 8px; }
+
+/* --------------------------------------------------------------------------
+   16. Chapter IX: Kitchen Companion Tools
+   -------------------------------------------------------------------------- */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 30px;
+}
+
+.tool-card {
+  padding: 30px;
+}
+.tool-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.tool-icon { font-size: 1.8rem; }
+.tool-header h3 { font-size: 1.5rem; }
+.tool-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; }
+
+.timer-display {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--terracotta);
+  text-align: center;
+  background: var(--bg-cream);
+  border: 2px solid rgba(139, 90, 43, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.timer-presets {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.timer-preset-btn {
+  background: var(--bg-cream);
+  border: 1px solid rgba(139, 90, 43, 0.2);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.timer-preset-btn:hover { background: var(--terracotta); color: white; }
+
+.timer-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* Converter */
+.converter-box { display: flex; flex-direction: column; gap: 18px; }
+.converter-row { display: flex; flex-direction: column; gap: 6px; }
+.converter-row label { font-size: 0.9rem; font-weight: 700; color: var(--wood-dark); }
+.input-pair { display: flex; align-items: center; gap: 10px; }
+.input-pair input { max-width: 100px; }
+.result-highlight { font-weight: 700; color: var(--terracotta); font-size: 1.05rem; }
+
+/* --------------------------------------------------------------------------
+   17. Footer & Back Cover
+   -------------------------------------------------------------------------- */
+.cookbook-footer {
+  background-color: var(--wood-dark);
+  color: var(--bg-parchment);
+  padding: 80px 20px 40px;
+  position: relative;
+  margin-top: 60px;
+}
+
+.footer-paper-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.footer-seal { margin-bottom: 24px; }
+.footer-title { font-size: 3rem; color: var(--bg-cream); margin-bottom: 12px; }
+.footer-quote { font-family: var(--font-handwriting); font-size: 1.8rem; color: var(--mustard-light); margin-bottom: 30px; }
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+.footer-link {
+  color: var(--bg-parchment);
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  border-bottom: 1px solid var(--terracotta);
+}
+.footer-link:hover { color: var(--terracotta-light); }
+
+.footer-credit { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+.editorial-tagline { font-family: var(--font-handwriting); font-size: 1.1rem; color: var(--sage-light); margin-top: 6px; }
+
+/* --------------------------------------------------------------------------
+   18. Modals & Overlays
+   -------------------------------------------------------------------------- */
+.recipe-modal, .polaroid-lightbox {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  visibility: hidden;
+  opacity: 0;
+  transition: var(--transition-smooth);
+}
+.recipe-modal.open, .polaroid-lightbox.open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal-backdrop, .lightbox-backdrop {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(44, 34, 30, 0.75);
+  backdrop-filter: blur(6px);
+}
+
+.modal-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 850px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 40px;
+  background-color: var(--bg-vanilla);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 20px; right: 20px;
+  background: none; border: none;
+  font-size: 2.2rem;
+  color: var(--wood-dark);
+  cursor: pointer;
+}
+
+/* Lightbox Polaroid */
+.lightbox-dialog {
+  position: relative;
+  max-width: 550px;
+  width: 100%;
+  z-index: 10;
+}
+
+.lightbox-polaroid {
+  background: var(--bg-cream);
+  padding: 20px 20px 30px;
+  border-radius: 4px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+}
+.lightbox-img { width: 100%; max-height: 420px; object-fit: cover; border-radius: 2px; }
+.lightbox-caption-box { margin-top: 20px; text-align: center; }
+.lightbox-title { font-size: 1.6rem; color: var(--wood-dark); }
+.lightbox-story { font-family: var(--font-handwriting); font-size: 1.35rem; color: var(--text-dark); margin-top: 8px; }
+
+/* Back To Top Button */
+.back-to-top-btn {
+  position: fixed;
+  bottom: 30px; right: 30px;
+  background: var(--terracotta);
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  cursor: pointer;
+  z-index: 900;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition-bounce);
+}
+.back-to-top-btn.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.back-to-top-btn:hover {
+  transform: translateY(-3px);
+  background: var(--terracotta-dark);
+}
+
+/* --------------------------------------------------------------------------
+   19. Responsive Layout Adjustments
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+  .nav-links { display: none; }
+  .mobile-menu-btn { display: flex; }
+  .spotlight-grid { grid-template-columns: 1fr; }
+  .timeline-line { left: 20px; }
+  .timeline-step { padding-left: 60px !important; padding-right: 0 !important; justify-content: flex-start !important; }
+  .timeline-badge { left: 20px; transform: translateX(0); }
+  .timeline-content { max-width: 100%; margin: 0; }
+}
+
+@media (max-width: 600px) {
+  .spotlight-card, .paper-card { padding: 20px; }
+  .cover-face { padding: 20px 10px; }
+  .cover-border { padding: 15px 10px; }
+  .recipe-meta-ribbon { grid-template-columns: repeat(2, 1fr); }
+  .spotlight-actions { flex-direction: column; }
+  .cta-btn { width: 100%; }
+}

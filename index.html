@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Belly's Kitchen | Tour de Table — Interactive Digital Cookbook</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="cookbook-body">
+    <!-- Ambient Texture Overlays -->
+    <div class="paper-overlay" aria-hidden="true"></div>
+    <div class="vignette-overlay" aria-hidden="true"></div>
+
+    <!-- Entrance Curtain / Animated Cookbook Cover Splash -->
+    <div id="loading-curtain" class="loading-curtain">
+      <div class="curtain-content">
+        <div class="wax-seal">
+          <span class="seal-icon">🍷</span>
+          <span class="seal-text">Belly's Kitchen</span>
+        </div>
+        <h1 class="curtain-title">Tour de Table</h1>
+        <p class="curtain-subtitle">Opening the Handcrafted Recipe Journal...</p>
+        <div class="loading-bar-container">
+          <div id="loading-bar" class="loading-bar"></div>
+        </div>
+        <button id="open-cookbook-btn" class="open-cookbook-btn hidden" aria-label="Open Digital Cookbook">
+          <span>Unfold Cookbook</span>
+          <svg class="feather-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Sticky Navigation & Bookmark Ribbon -->
+    <header id="main-header" class="main-header">
+      <div class="header-container">
+        <a href="#cover" class="brand-badge">
+          <span class="brand-seal">BK</span>
+          <div class="brand-text">
+            <span class="brand-name">Belly's Kitchen</span>
+            <span class="brand-tagline">Tour de Table</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Bar -->
+        <nav class="nav-links" aria-label="Main Navigation">
+          <a href="#cover" class="nav-item active" data-chapter="cover">Cover</a>
+          <a href="#todays-recipe" class="nav-item" data-chapter="todays-recipe">Spotlight</a>
+          <a href="#notebook" class="nav-item" data-chapter="notebook">Notebook</a>
+          <a href="#memories" class="nav-item" data-chapter="memories">Memories</a>
+          <a href="#table" class="nav-item" data-chapter="table">The Table</a>
+          <a href="#pantry" class="nav-item" data-chapter="pantry">Pantry</a>
+          <a href="#timeline" class="nav-item" data-chapter="timeline">Timeline</a>
+          <a href="#vault" class="nav-item" data-chapter="vault">Recipe Vault</a>
+          <a href="#tools" class="nav-item" data-chapter="tools">Companion Tools</a>
+        </nav>
+
+        <!-- Right Header Actions -->
+        <div class="header-actions">
+          <button id="audio-toggle-btn" class="header-btn audio-btn" title="Toggle Kitchen Ambiance (Hearth Sounds)" aria-label="Toggle Ambiance Sound">
+            <span class="audio-icon">🔥</span>
+            <span class="audio-label">Hearth Sound</span>
+          </button>
+          
+          <button id="toc-toggle-btn" class="header-btn toc-btn" title="Open Table of Contents" aria-label="Table of Contents">
+            <span class="toc-icon">📖</span>
+            <span class="toc-label">Index</span>
+          </button>
+
+          <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle Mobile Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Table of Contents Modal/Drawer -->
+    <div id="toc-drawer" class="toc-drawer" aria-hidden="true">
+      <div class="toc-backdrop" id="toc-backdrop"></div>
+      <div class="toc-content">
+        <div class="toc-header">
+          <h3>Table of Contents</h3>
+          <button id="toc-close-btn" class="close-btn" aria-label="Close Table of Contents">&times;</button>
+        </div>
+        <div class="toc-body">
+          <ol class="toc-list">
+            <li><a href="#cover" class="toc-link"><span class="toc-num">Ch. I</span><span class="toc-title">The Opening Journal & Cover</span></a></li>
+            <li><a href="#todays-recipe" class="toc-link"><span class="toc-num">Ch. II</span><span class="toc-title">Today's Favorite Spotlight</span></a></li>
+            <li><a href="#notebook" class="toc-link"><span class="toc-num">Ch. III</span><span class="toc-title">From Belly's Handwritten Notebook</span></a></li>
+            <li><a href="#memories" class="toc-link"><span class="toc-num">Ch. IV</span><span class="toc-title">Cooking Memories & Polaroid Gallery</span></a></li>
+            <li><a href="#table" class="toc-link"><span class="toc-num">Ch. V</span><span class="toc-title">Around the Family Table</span></a></li>
+            <li><a href="#pantry" class="toc-link"><span class="toc-num">Ch. VI</span><span class="toc-title">Artisanal Pantry & Favorite Ingredients</span></a></li>
+            <li><a href="#timeline" class="toc-link"><span class="toc-num">Ch. VII</span><span class="toc-title">A Day in Belly's Kitchen (Timeline)</span></a></li>
+            <li><a href="#vault" class="toc-link"><span class="toc-num">Ch. VIII</span><span class="toc-title">The Recipe Vault (Handcrafted Collection)</span></a></li>
+            <li><a href="#tools" class="toc-link"><span class="toc-num">Ch. IX</span><span class="toc-title">Kitchen Companion (Timer & Converter)</span></a></li>
+            <li><a href="#back-cover" class="toc-link"><span class="toc-num">Fin</span><span class="toc-title">Back Cover & Recipe Submissions</span></a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Mobile Navigation Overlay -->
+    <div id="mobile-nav" class="mobile-nav" aria-hidden="true">
+      <div class="mobile-nav-content">
+        <a href="#cover" class="mobile-nav-link">Cover</a>
+        <a href="#todays-recipe" class="mobile-nav-link">Spotlight Recipe</a>
+        <a href="#notebook" class="mobile-nav-link">Belly's Notebook</a>
+        <a href="#memories" class="mobile-nav-link">Polaroid Memories</a>
+        <a href="#table" class="mobile-nav-link">The Family Table</a>
+        <a href="#pantry" class="mobile-nav-link">Ingredients</a>
+        <a href="#timeline" class="mobile-nav-link">Daily Timeline</a>
+        <a href="#vault" class="mobile-nav-link">Recipe Vault</a>
+        <a href="#tools" class="mobile-nav-link">Companion Tools</a>
+      </div>
+    </div>
+
+    <!-- MAIN COOKBOOK CONTENT - STORYTELLING CHAPTERS -->
+    <main id="cookbook-main" class="cookbook-main">
+
+      <!-- CHAPTER 1: COVER PAGE -->
+      <section id="cover" class="chapter-section cover-chapter">
+        <div class="chapter-stamp">Chapter I</div>
+        <div class="cover-wrapper">
+          <div class="book-cover-3d" id="interactive-book-cover">
+            <div class="cover-spine"></div>
+            <div class="cover-face">
+              <div class="cover-border">
+                <div class="corner-ornament top-left"></div>
+                <div class="corner-ornament top-right"></div>
+                <div class="corner-ornament bottom-left"></div>
+                <div class="corner-ornament bottom-right"></div>
+                
+                <span class="handwritten-eyebrow">Handcrafted Family Journal • Est. 1984</span>
+                <h1 class="cover-title">Belly's Kitchen</h1>
+                <div class="cover-divider">
+                  <span class="divider-leaf">🌿</span>
+                </div>
+                <h2 class="cover-subtitle">Tour de Table</h2>
+                <p class="cover-tagline">"Every Recipe Tells A Story. Homemade food, shared memories, and meals created with love."</p>
+
+                <div class="cover-illustration">
+                  <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1200&q=80" alt="Rustic Kitchen Table with Flour and Wooden Spoon" class="cover-img" loading="eager" />
+                  <div class="tape-strip top-tape"></div>
+                  <div class="handwritten-note-overlay">"Volume III — The Harvest Edition"</div>
+                </div>
+
+                <div class="cover-actions">
+                  <a href="#todays-recipe" class="cta-btn primary-cta">
+                    <span>Explore Recipes</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                  </a>
+                  <a href="#vault" class="cta-btn secondary-cta">
+                    <span>Open Vault</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-indicator">
+          <span class="scroll-text">Turn the Page</span>
+          <div class="scroll-arrow">↓</div>
+        </div>
+      </section>
+
+
+      <!-- CHAPTER 2: TODAY'S RECIPE SPOTLIGHT -->
+      <section id="todays-recipe" class="chapter-section spotlight-chapter">
+        <div class="chapter-header">
+          <span class="chapter-tag">Chapter II</span>
+          <h2 class="chapter-title">Today's Favorite Recipe</h2>
+          <p class="chapter-intro">A seasonal spotlight from Belly's wooden table, baked to golden perfection.</p>
+        </div>
+
+        <div class="spotlight-card paper-card">
+          <div class="spotlight-grid">
+            
+            <!-- Left: Hero Recipe Visual & Polaroid Tape -->
+            <div class="spotlight-visual">
+              <div class="polaroid-frame featured-polaroid">
+                <div class="tape-strip"></div>
+                <img src="https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?auto=format&fit=crop&w=1000&q=80" alt="Sun-Drenched Tomato & Garlic Confit Galette" class="polaroid-img" />
+                <div class="polaroid-caption">
+                  <span class="caption-handwritten">"Baked this past Sunday morning. Smells like heaven!"</span>
+                </div>
+              </div>
+
+              <!-- Quick Stats Ribbon -->
+              <div class="recipe-meta-ribbon">
+                <div class="meta-item">
+                  <span class="meta-icon">⏱️</span>
+                  <span class="meta-val">45 Mins</span>
+                  <span class="meta-lbl">Prep & Bake</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-icon">🍳</span>
+                  <span class="meta-val">Easy</span>
+                  <span class="meta-lbl">Difficulty</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-icon">🌿</span>
+                  <span class="meta-val">Vegetarian</span>
+                  <span class="meta-lbl">Dietary</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-icon">⭐</span>
+                  <span class="meta-val">4.9/5</span>
+                  <span class="meta-lbl">Family Choice</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Recipe Details, Interactive Scaler & Ingredients -->
+            <div class="spotlight-details">
+              <span class="handwritten-annotation">Belly's Signature Bake</span>
+              <h3 class="recipe-main-title">Sun-Drenched Tomato & Garlic Confit Galette</h3>
+              <p class="recipe-description">
+                Flaky butter pastry folded over sweet heirloom tomatoes, slow-confited garlic, fresh wild thyme, and creamy goat cheese. Best enjoyed warm under the afternoon sun with a glass of crisp white wine.
+              </p>
+
+              <!-- Interactive Servings Adjuster -->
+              <div class="servings-calculator">
+                <span class="calc-label">Adjust Servings:</span>
+                <div class="calc-controls">
+                  <button id="servings-dec-btn" class="calc-btn" aria-label="Decrease Servings">-</button>
+                  <span id="servings-count" class="servings-count">4</span>
+                  <button id="servings-inc-btn" class="calc-btn" aria-label="Increase Servings">+</button>
+                  <span class="servings-unit">Guests</span>
+                </div>
+              </div>
+
+              <!-- Dynamic Scaled Ingredients List -->
+              <div class="ingredients-box">
+                <h4 class="box-title">
+                  <span>Pantry Requirements</span>
+                  <span class="title-accent">(Check as you prep)</span>
+                </h4>
+                <ul id="spotlight-ingredients-list" class="ingredients-list">
+                  <!-- Javascript dynamically scales these quantities -->
+                  <li>
+                    <label class="ingredient-check">
+                      <input type="checkbox">
+                      <span class="custom-check"></span>
+                      <span class="ing-qty" data-base="200">200</span>g <span class="ing-name">All-Purpose Flour (Chilled)</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="ingredient-check">
+                      <input type="checkbox">
+                      <span class="custom-check"></span>
+                      <span class="ing-qty" data-base="110">110</span>g <span class="ing-name">Unsalted Butter (Cut into cubes)</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="ingredient-check">
+                      <input type="checkbox">
+                      <span class="custom-check"></span>
+                      <span class="ing-qty" data-base="4">4</span> <span class="ing-name">Heirloom Tomatoes (Sliced thick)</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="ingredient-check">
+                      <input type="checkbox">
+                      <span class="custom-check"></span>
+                      <span class="ing-qty" data-base="1">1</span> head <span class="ing-name">Garlic (Confit in Olive Oil)</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="ingredient-check">
+                      <input type="checkbox">
+                      <span class="custom-check"></span>
+                      <span class="ing-qty" data-base="120">120</span>g <span class="ing-name">Soft Goat Cheese or Ricotta</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="ingredient-check">
+                      <input type="checkbox">
+                      <span class="custom-check"></span>
+                      <span class="ing-qty" data-base="1">1</span> sprig <span class="ing-name">Fresh Wild Thyme & Sea Salt</span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Action buttons -->
+              <div class="spotlight-actions">
+                <button class="cta-btn primary-cta open-recipe-modal-btn" data-recipe-id="galette">
+                  <span>View Full Step-by-Step Journal</span>
+                </button>
+                <button id="quick-timer-launch-btn" class="cta-btn outline-cta" data-minutes="35">
+                  <span>⏱️ Set 35 Min Bake Timer</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- CHAPTER 3: FROM BELLY'S NOTEBOOK -->
+      <section id="notebook" class="chapter-section notebook-chapter">
+        <div class="chapter-header text-center">
+          <span class="chapter-tag">Chapter III</span>
+          <h2 class="chapter-title">From Belly's Handwritten Notebook</h2>
+          <p class="chapter-intro">Marginalia, golden kitchen secrets, and handwritten wisdom gathered across decades of family meals.</p>
+        </div>
+
+        <div class="notebook-board">
+          <!-- Sticky Note 1 -->
+          <div class="sticky-note note-terracotta">
+            <div class="note-pin"></div>
+            <span class="note-date">May 12, 1991</span>
+            <h3 class="note-title">Secret to Flaky Crust</h3>
+            <p class="note-body">
+              "Never work dough with warm hands. Keep ice water nearby and grate the butter frozen into the flour. Touch it as little as possible — love needs lightness here."
+            </p>
+            <span class="note-signature">— Belly</span>
+          </div>
+
+          <!-- Sticky Note 2 -->
+          <div class="sticky-note note-olive">
+            <div class="note-pin"></div>
+            <span class="note-date">Autumn Harvest</span>
+            <h3 class="note-title">The Sofrito Foundation</h3>
+            <p class="note-body">
+              "Onions, celery, and carrots must be chopped uniformly small and simmered on low flame with olive oil for 25 minutes. Do not rush the gold!"
+            </p>
+            <span class="note-signature">— Belly</span>
+          </div>
+
+          <!-- Sticky Note 3 -->
+          <div class="sticky-note note-mustard">
+            <div class="note-pin"></div>
+            <span class="note-date">Sunday Evening</span>
+            <h3 class="note-title">Sourdough Whispers</h3>
+            <p class="note-body">
+              "Listen to the crust when it comes out of the Dutch oven. If it crackles and sings, you’ve achieved perfect moisture balance inside."
+            </p>
+            <span class="note-signature">— Belly</span>
+          </div>
+
+          <!-- Sticky Note 4 -->
+          <div class="sticky-note note-sage">
+            <div class="note-pin"></div>
+            <span class="note-date">Summer Notes</span>
+            <h3 class="note-title">Salting Tomatoes</h3>
+            <p class="note-body">
+              "Always slice heirloom tomatoes onto linen towels and dust with sea salt 20 minutes before assembling a tart. It draws out liquid so the crust stays crisp."
+            </p>
+            <span class="note-signature">— Belly</span>
+          </div>
+        </div>
+
+        <!-- Interactive Add A Note Widget -->
+        <div class="add-note-box paper-card">
+          <div class="add-note-header">
+            <h3>✏️ Leave Your Own Kitchen Tip</h3>
+            <p>Write a favorite memory or tip to pin onto Belly's virtual kitchen board!</p>
+          </div>
+          <form id="add-note-form" class="add-note-form">
+            <input type="text" id="note-author-input" placeholder="Your Name or Family Title" required class="paper-input" />
+            <textarea id="note-text-input" placeholder="Type your kitchen secret or memory here..." required class="paper-textarea" rows="3"></textarea>
+            <button type="submit" class="cta-btn primary-cta">Pin Note to Board</button>
+          </form>
+        </div>
+      </section>
+
+
+      <!-- CHAPTER 4: COOKING MEMORIES & POLAROID GALLERY -->
+      <section id="memories" class="chapter-section memories-chapter">
+        <div class="chapter-header">
+          <span class="chapter-tag">Chapter IV</span>
+          <h2 class="chapter-title">Cooking Memories</h2>
+          <p class="chapter-intro">Snapshots of laughter, flour-dusted countertops, and warm afternoons in the kitchen.</p>
+        </div>
+
+        <!-- Filter Tags -->
+        <div class="gallery-filter-bar">
+          <button class="filter-btn active" data-filter="all">All Snapshots</button>
+          <button class="filter-btn" data-filter="sunday">Sunday Feasts</button>
+          <button class="filter-btn" data-filter="bakes">Morning Bakes</button>
+          <button class="filter-btn" data-filter="harvest">Garden Harvest</button>
+        </div>
+
+        <!-- Polaroid Wall -->
+        <div class="polaroid-grid" id="polaroid-grid">
+
+          <div class="polaroid-item" data-category="bakes" data-caption="Flour on wooden boards — 1998" data-img="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80" data-story="Kneading sourdough dough at 6 AM before the rest of the household woke up. The kitchen smelled of roasted yeast and fresh rain outside.">
+            <div class="tape-strip top-center"></div>
+            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80" alt="Flour dusted hands baking bread" class="polaroid-img" />
+            <div class="polaroid-label">Flour on wooden boards</div>
+          </div>
+
+          <div class="polaroid-item" data-category="sunday" data-caption="Sunday Slow Stew — 2004" data-img="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80" data-story="Six hours of low simmer in the heavy red enamel Dutch oven. The family gathered around the table three hours before dinner was even served.">
+            <div class="tape-strip top-left"></div>
+            <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80" alt="Cozy soup in ceramic bowl" class="polaroid-img" />
+            <div class="polaroid-label">Sunday Slow Stew</div>
+          </div>
+
+          <div class="polaroid-item" data-category="harvest" data-caption="Fresh Herbs & Rosemary" data-img="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80" data-story="Picked straight from the terracotta garden pots behind the kitchen window. Nothing elevates simple pasta quite like wild garden rosemary.">
+            <div class="tape-strip top-right"></div>
+            <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80" alt="Fresh garden herbs and salad bowl" class="polaroid-img" />
+            <div class="polaroid-label">Garden Herbs</div>
+          </div>
+
+          <div class="polaroid-item" data-category="bakes" data-caption="Berry Tart on Linen" data-img="https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=800&q=80" data-story="Summer solstice blackberry galette. We picked the wild berries along the fence and dusted them with lemon zest and raw cane sugar.">
+            <div class="tape-strip top-center"></div>
+            <img src="https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=800&q=80" alt="Artisanal berry tart with dusted sugar" class="polaroid-img" />
+            <div class="polaroid-label">Summer Solstice Bake</div>
+          </div>
+
+          <div class="polaroid-item" data-category="sunday" data-caption="Hand-Rolled Pappardelle" data-img="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80" data-story="Grandma teaching the grand-children how to cut wide ribbons of egg pasta using a brass fluted cutter. Egg flour everywhere!">
+            <div class="tape-strip top-left"></div>
+            <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80" alt="Handmade pasta on wooden surface" class="polaroid-img" />
+            <div class="polaroid-label">Hand-Rolled Ribbon Pasta</div>
+          </div>
+
+          <div class="polaroid-item" data-category="harvest" data-caption="Spices & Olive Oil" data-img="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80" data-story="The smell of whole black peppercorns crushed in a heavy granite mortar with sea salt flakes and garlic cloves.">
+            <div class="tape-strip top-right"></div>
+            <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80" alt="Spices and herbs on cutting board" class="polaroid-img" />
+            <div class="polaroid-label">Crushed Spices & Oil</div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- CHAPTER 5: AROUND THE FAMILY TABLE -->
+      <section id="table" class="chapter-section table-chapter">
+        <div class="chapter-header text-center">
+          <span class="chapter-tag">Chapter V</span>
+          <h2 class="chapter-title">Around the Family Table</h2>
+          <p class="chapter-intro">Where conversation flows as freely as the wine and warm crusts are broken together.</p>
+        </div>
+
+        <div class="table-story-card paper-card">
+          <div class="table-hero-image">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80" alt="Warm candlelit family dinner table" class="table-img" />
+            <div class="image-gradient-overlay"></div>
+            <div class="table-quote-overlay">
+              <blockquote>"Food is the vessel, but memory is the meal. In Belly's kitchen, the table is where stories are passed down faster than the wine."</blockquote>
+            </div>
+          </div>
+
+          <!-- Interactive Table Conversation Deck -->
+          <div class="table-deck-section">
+            <div class="deck-info">
+              <h3>🍷 Tour de Table Conversation Starter</h3>
+              <p>Draw a card to ask your guests around the dinner table tonight!</p>
+            </div>
+            <div class="deck-card-container">
+              <div id="deck-card" class="deck-card">
+                <span class="deck-card-number">Card #1</span>
+                <p id="deck-card-text" class="deck-card-text">"What is a childhood dish that instantly transports you back to your grandparents' kitchen?"</p>
+                <button id="draw-card-btn" class="cta-btn outline-cta">Draw Next Card 🎴</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- CHAPTER 6: FAVORITE INGREDIENTS & PANTRY -->
+      <section id="pantry" class="chapter-section pantry-chapter">
+        <div class="chapter-header">
+          <span class="chapter-tag">Chapter VI</span>
+          <h2 class="chapter-title">The Artisanal Pantry</h2>
+          <p class="chapter-intro">Every memorable meal begins with simple, honest ingredients sourced with care.</p>
+        </div>
+
+        <!-- Floating Interactive Ingredient Grid -->
+        <div class="pantry-grid">
+
+          <div class="pantry-card" data-ingredient="olive-oil">
+            <div class="pantry-icon">🫒</div>
+            <h3 class="pantry-title">Cold-Pressed Extra Virgin Olive Oil</h3>
+            <p class="pantry-origin">Tuscan Hills, Single Estate</p>
+            <p class="pantry-desc">Peppery, fruity, and golden. Drizzled over warm sourdough or used as the foundation for slow confit.</p>
+            <span class="pantry-tag">Pantry Essential</span>
+          </div>
+
+          <div class="pantry-card" data-ingredient="sea-salt">
+            <div class="pantry-icon">🧂</div>
+            <h3 class="pantry-title">Flaky Maldon Sea Salt</h3>
+            <p class="pantry-origin">Coastal Salt Pans</p>
+            <p class="pantry-desc">Delicate pyramid crystals that add textural crunch and highlight the natural sweetness of ripe tomatoes.</p>
+            <span class="pantry-tag">Finishing Touch</span>
+          </div>
+
+          <div class="pantry-card" data-ingredient="tomatoes">
+            <div class="pantry-icon">🍅</div>
+            <h3 class="pantry-title">San Marzano Heirloom Tomatoes</h3>
+            <p class="pantry-origin">Volcanic Garden Soil</p>
+            <p class="pantry-desc">Rich acidity and intense sweetness. Picked at peak summer sun for galettes, preserves, and slow ragù.</p>
+            <span class="pantry-tag">Summer Star</span>
+          </div>
+
+          <div class="pantry-card" data-ingredient="rosemary">
+            <div class="pantry-icon">🌿</div>
+            <h3 class="pantry-title">Wild Garden Rosemary</h3>
+            <p class="pantry-origin">Belly's Window Garden</p>
+            <p class="pantry-desc">Piny fragrance that infuses olive oils, roasts, and focaccia breads with rustic aroma.</p>
+            <span class="pantry-tag">Aromatic Herb</span>
+          </div>
+
+          <div class="pantry-card" data-ingredient="flour">
+            <div class="pantry-icon">🌾</div>
+            <h3 class="pantry-title">Stone-Ground Whole Wheat Flour</h3>
+            <p class="pantry-origin">Artisan Grain Mill</p>
+            <p class="pantry-desc">Unbleached and rich in bran. Brings nutty depth and golden crust structure to handmade doughs.</p>
+            <span class="pantry-tag">Baking Core</span>
+          </div>
+
+          <div class="pantry-card" data-ingredient="garlic">
+            <div class="pantry-icon">🧄</div>
+            <h3 class="pantry-title">Purple Heirloom Garlic</h3>
+            <p class="pantry-origin">Local Farmer's Market</p>
+            <p class="pantry-desc">When slow roasted whole in oil, it transforms into sweet, spreadable butter-like perfection.</p>
+            <span class="pantry-tag">Flavor Anchor</span>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- CHAPTER 7: KITCHEN TIMELINE -->
+      <section id="timeline" class="chapter-section timeline-chapter">
+        <div class="chapter-header text-center">
+          <span class="chapter-tag">Chapter VII</span>
+          <h2 class="chapter-title">A Day in Belly's Kitchen</h2>
+          <p class="chapter-intro">Follow the rhythmic flow of a traditional day spent around the wooden cutting board.</p>
+        </div>
+
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+
+          <div class="timeline-step">
+            <div class="timeline-badge">07:00 AM</div>
+            <div class="timeline-content paper-card">
+              <div class="timeline-icon">☕</div>
+              <h3>Morning Sourdough Feed</h3>
+              <p>Stirring warm water and stone-ground flour into the 12-year-old sourdough starter while the morning kettle boils.</p>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="timeline-badge">10:30 AM</div>
+            <div class="timeline-content paper-card">
+              <div class="timeline-icon">🧺</div>
+              <h3>Garden Harvest & Herbs</h3>
+              <p>Walking through the dew-dusted garden to clip fresh thyme, sage sprigs, and ripe vine tomatoes into the wicker basket.</p>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="timeline-badge">01:00 PM</div>
+            <div class="timeline-content paper-card">
+              <div class="timeline-icon">🍝</div>
+              <h3>Rolling Pasta Ribbon Dough</h3>
+              <p>Dusting the wooden table with flour, creating a well for farm-fresh egg yolks, and rolling ribbons of golden pappardelle.</p>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="timeline-badge">04:30 PM</div>
+            <div class="timeline-content paper-card">
+              <div class="timeline-icon">🍲</div>
+              <h3>Slow Simmering the Ragù</h3>
+              <p>The Dutch oven bubbles gently on the back burner. Aromas of red wine, crushed garlic, and bay leaves fill every room.</p>
+            </div>
+          </div>
+
+          <div class="timeline-step">
+            <div class="timeline-badge">07:30 PM</div>
+            <div class="timeline-content paper-card">
+              <div class="timeline-icon">🕯️</div>
+              <h3>Lighting Candles & Tour de Table</h3>
+              <p>Placing warm galettes and crusty bread onto linen tablecloths. Wine glasses clink as family and friends settle in.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- CHAPTER 8: RECIPE VAULT (HANDCRAFTED COLLECTION) -->
+      <section id="vault" class="chapter-section vault-chapter">
+        <div class="chapter-header">
+          <span class="chapter-tag">Chapter VIII</span>
+          <h2 class="chapter-title">The Handwritten Recipe Vault</h2>
+          <p class="chapter-intro">Filter, search, and click cards to flip or open the full journal entry for each treasured dish.</p>
+        </div>
+
+        <!-- Search & Category Filters -->
+        <div class="vault-controls">
+          <div class="search-box-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="recipe-search-input" class="search-input" placeholder="Search recipes by name, ingredient, or tag..." />
+          </div>
+
+          <div class="vault-category-tabs">
+            <button class="vault-tab active" data-category="all">All Dishes</button>
+            <button class="vault-tab" data-category="bakes">Artisan Bakes</button>
+            <button class="vault-tab" data-category="stews">Soups & Stews</button>
+            <button class="vault-tab" data-category="pasta">Pastas & Mains</button>
+            <button class="vault-tab" data-category="sweets">Sweet Traditions</button>
+          </div>
+        </div>
+
+        <!-- 3D Flip Card Recipe Grid -->
+        <div class="recipe-cards-grid" id="recipe-cards-grid">
+
+          <!-- Card 1: Galette -->
+          <div class="recipe-card-3d" data-category="bakes" data-id="galette">
+            <div class="card-inner">
+              <div class="card-front paper-card">
+                <span class="card-badge">Signature Bake</span>
+                <img src="https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?auto=format&fit=crop&w=800&q=80" alt="Tomato Galette" class="card-img" />
+                <div class="card-body">
+                  <h3 class="card-title">Tomato & Garlic Confit Galette</h3>
+                  <p class="card-snippet">Flaky pastry, heirloom tomatoes, slow-confited garlic & goat cheese.</p>
+                  <div class="card-meta">
+                    <span>⏱️ 45m</span>
+                    <span>🍳 Easy</span>
+                    <span>🌿 Veg</span>
+                  </div>
+                  <button class="flip-btn">Flip to Preview 🔄</button>
+                </div>
+              </div>
+              <div class="card-back paper-card">
+                <h3 class="card-back-title">Quick Ingredients</h3>
+                <ul class="card-back-list">
+                  <li>• Flour, Butter, Ice Water</li>
+                  <li>• Heirloom Tomatoes</li>
+                  <li>• Garlic Confit & Thyme</li>
+                  <li>• Goat Cheese & Salt</li>
+                </ul>
+                <p class="card-back-note">"Always salt tomatoes first to keep dough crispy!"</p>
+                <div class="card-back-actions">
+                  <button class="cta-btn primary-cta open-recipe-modal-btn" data-recipe-id="galette">View Full Journal Page</button>
+                  <button class="flip-btn-back">Flip Back ↩️</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Pappardelle -->
+          <div class="recipe-card-3d" data-category="pasta" data-id="pappardelle">
+            <div class="card-inner">
+              <div class="card-front paper-card">
+                <span class="card-badge">Family Pasta</span>
+                <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80" alt="Wild Mushroom Pappardelle" class="card-img" />
+                <div class="card-body">
+                  <h3 class="card-title">Wild Mushroom & Sage Pappardelle</h3>
+                  <p class="card-snippet">Hand-cut pasta ribbons tossed with caramelized porcini, sage butter & parmesan.</p>
+                  <div class="card-meta">
+                    <span>⏱️ 35m</span>
+                    <span>🍳 Medium</span>
+                    <span>🌿 Veg</span>
+                  </div>
+                  <button class="flip-btn">Flip to Preview 🔄</button>
+                </div>
+              </div>
+              <div class="card-back paper-card">
+                <h3 class="card-back-title">Quick Ingredients</h3>
+                <ul class="card-back-list">
+                  <li>• Fresh Egg Flour Dough</li>
+                  <li>• Porcini & Chanterelles</li>
+                  <li>• Unsalted Butter & Sage</li>
+                  <li>• Aged Parmigiano Reggiano</li>
+                </ul>
+                <p class="card-back-note">"Save 1/2 cup pasta water to create silky emulsified glaze!"</p>
+                <div class="card-back-actions">
+                  <button class="cta-btn primary-cta open-recipe-modal-btn" data-recipe-id="pappardelle">View Full Journal Page</button>
+                  <button class="flip-btn-back">Flip Back ↩️</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Stew -->
+          <div class="recipe-card-3d" data-category="stews" data-id="stew">
+            <div class="card-inner">
+              <div class="card-front paper-card">
+                <span class="card-badge">Cozy Comfort</span>
+                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80" alt="Tuscan White Bean & Kale Stew" class="card-img" />
+                <div class="card-body">
+                  <h3 class="card-title">Tuscan White Bean & Kale Stew</h3>
+                  <p class="card-snippet">Slow-cooked Cannellini beans, lacinato kale, smoked paprika & sourdough croutons.</p>
+                  <div class="card-meta">
+                    <span>⏱️ 60m</span>
+                    <span>🍳 Easy</span>
+                    <span>🌿 Vegan</span>
+                  </div>
+                  <button class="flip-btn">Flip to Preview 🔄</button>
+                </div>
+              </div>
+              <div class="card-back paper-card">
+                <h3 class="card-back-title">Quick Ingredients</h3>
+                <ul class="card-back-list">
+                  <li>• Cannellini White Beans</li>
+                  <li>• Lacinato Tuscan Kale</li>
+                  <li>• Sofrito (Onion, Carrots, Celery)</li>
+                  <li>• Rosemary & Olive Oil</li>
+                </ul>
+                <p class="card-back-note">"Drizzle fresh raw olive oil on top right before serving."</p>
+                <div class="card-back-actions">
+                  <button class="cta-btn primary-cta open-recipe-modal-btn" data-recipe-id="stew">View Full Journal Page</button>
+                  <button class="flip-btn-back">Flip Back ↩️</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: Sourdough -->
+          <div class="recipe-card-3d" data-category="bakes" data-id="sourdough">
+            <div class="card-inner">
+              <div class="card-front paper-card">
+                <span class="card-badge">Daily Loaf</span>
+                <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80" alt="Rustic Garlic Sourdough" class="card-img" />
+                <div class="card-body">
+                  <h3 class="card-title">Rustic Roasted Garlic Sourdough</h3>
+                  <p class="card-snippet">Crispy blistered crust, airy crumb infused with sweet roasted garlic cloves.</p>
+                  <div class="card-meta">
+                    <span>⏱️ Overnight</span>
+                    <span>🍳 Advanced</span>
+                    <span>🍞 Artisan</span>
+                  </div>
+                  <button class="flip-btn">Flip to Preview 🔄</button>
+                </div>
+              </div>
+              <div class="card-back paper-card">
+                <h3 class="card-back-title">Quick Ingredients</h3>
+                <ul class="card-back-list">
+                  <li>• Active Sourdough Starter</li>
+                  <li>• Unbleached Bread Flour</li>
+                  <li>• Fine Sea Salt & Water</li>
+                  <li>• Roasted Garlic Bulbs</li>
+                </ul>
+                <p class="card-back-note">"Bake inside preheated Dutch oven at 230°C with lid closed 20m."</p>
+                <div class="card-back-actions">
+                  <button class="cta-btn primary-cta open-recipe-modal-btn" data-recipe-id="sourdough">View Full Journal Page</button>
+                  <button class="flip-btn-back">Flip Back ↩️</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5: Tart -->
+          <div class="recipe-card-3d" data-category="sweets" data-id="tart">
+            <div class="card-inner">
+              <div class="card-front paper-card">
+                <span class="card-badge">Sweet Tradition</span>
+                <img src="https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=800&q=80" alt="Wild Berry & Honey Tart" class="card-img" />
+                <div class="card-body">
+                  <h3 class="card-title">Wild Berry & Lavender Honey Tart</h3>
+                  <p class="card-snippet">Butter pastry shell filled with vanilla bean mascarpone and fresh summer berries.</p>
+                  <div class="card-meta">
+                    <span>⏱️ 50m</span>
+                    <span>🍳 Easy-Med</span>
+                    <span>🍰 Dessert</span>
+                  </div>
+                  <button class="flip-btn">Flip to Preview 🔄</button>
+                </div>
+              </div>
+              <div class="card-back paper-card">
+                <h3 class="card-back-title">Quick Ingredients</h3>
+                <ul class="card-back-list">
+                  <li>• Sweet Pastry Crust</li>
+                  <li>• Mascarpone & Vanilla Bean</li>
+                  <li>• Wild Blackberries & Raspberries</li>
+                  <li>• Lavender Wildflower Honey</li>
+                </ul>
+                <p class="card-back-note">"Warm the honey slightly before drizzling over fresh fruit."</p>
+                <div class="card-back-actions">
+                  <button class="cta-btn primary-cta open-recipe-modal-btn" data-recipe-id="tart">View Full Journal Page</button>
+                  <button class="flip-btn-back">Flip Back ↩️</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6: Roasted Chicken -->
+          <div class="recipe-card-3d" data-category="pasta" data-id="chicken">
+            <div class="card-inner">
+              <div class="card-front paper-card">
+                <span class="card-badge">Sunday Feast</span>
+                <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80" alt="Rosemary & Lemon Roasted Chicken" class="card-img" />
+                <div class="card-body">
+                  <h3 class="card-title">Lemon & Smoked Rosemary Roast Chicken</h3>
+                  <p class="card-snippet">Whole crisp-skin roast chicken with garlic butter, fresh rosemary & roasted lemons.</p>
+                  <div class="card-meta">
+                    <span>⏱️ 75m</span>
+                    <span>🍳 Medium</span>
+                    <span>🍗 Main</span>
+                  </div>
+                  <button class="flip-btn">Flip to Preview 🔄</button>
+                </div>
+              </div>
+              <div class="card-back paper-card">
+                <h3 class="card-back-title">Quick Ingredients</h3>
+                <ul class="card-back-list">
+                  <li>• Whole Pasture Chicken</li>
+                  <li>• Compound Herb Butter</li>
+                  <li>• Organic Lemons & Garlic</li>
+                  <li>• Fresh Rosemary Sprigs</li>
+                </ul>
+                <p class="card-back-note">"Rest for 15 minutes before carving to preserve juice!"</p>
+                <div class="card-back-actions">
+                  <button class="cta-btn primary-cta open-recipe-modal-btn" data-recipe-id="chicken">View Full Journal Page</button>
+                  <button class="flip-btn-back">Flip Back ↩️</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- CHAPTER 9: KITCHEN COMPANION TOOLS -->
+      <section id="tools" class="chapter-section tools-chapter">
+        <div class="chapter-header">
+          <span class="chapter-tag">Chapter IX</span>
+          <h2 class="chapter-title">Kitchen Companion Station</h2>
+          <p class="chapter-intro">Handy interactive tools to assist your baking, timing, and portion calculations.</p>
+        </div>
+
+        <div class="tools-grid">
+
+          <!-- Interactive Kitchen Timer -->
+          <div class="tool-card paper-card">
+            <div class="tool-header">
+              <span class="tool-icon">⏱️</span>
+              <h3>Belly's Kitchen Timer</h3>
+            </div>
+            <p class="tool-desc">Set baking or simmering alarms. Emits a gentle vintage chime when ready!</p>
+            
+            <div class="timer-display">
+              <span id="timer-minutes">15</span>:<span id="timer-seconds">00</span>
+            </div>
+
+            <div class="timer-presets">
+              <button class="timer-preset-btn" data-mins="3">3m (Eggs)</button>
+              <button class="timer-preset-btn" data-mins="10">10m (Pasta)</button>
+              <button class="timer-preset-btn" data-mins="20">20m (Rest)</button>
+              <button class="timer-preset-btn" data-mins="35">35m (Bake)</button>
+              <button class="timer-preset-btn" data-mins="60">60m (Simmer)</button>
+            </div>
+
+            <div class="timer-actions">
+              <button id="timer-start-btn" class="cta-btn primary-cta">Start Timer ▶</button>
+              <button id="timer-reset-btn" class="cta-btn outline-cta">Reset 🔄</button>
+            </div>
+          </div>
+
+          <!-- Unit & Temperature Converter -->
+          <div class="tool-card paper-card">
+            <div class="tool-header">
+              <span class="tool-icon">⚖️</span>
+              <h3>Measurement & Oven Converter</h3>
+            </div>
+            <p class="tool-desc">Quick conversion between Metric & Imperial kitchen values.</p>
+
+            <div class="converter-box">
+              <div class="converter-row">
+                <label>Oven Temp:</label>
+                <div class="input-pair">
+                  <input type="number" id="temp-c" value="180" class="paper-input" placeholder="°C" />
+                  <span>°C =</span>
+                  <span id="temp-f-result" class="result-highlight">356°F / Gas Mark 4</span>
+                </div>
+              </div>
+
+              <div class="converter-row">
+                <label>Flour Weight:</label>
+                <div class="input-pair">
+                  <input type="number" id="weight-g" value="250" class="paper-input" placeholder="Grams" />
+                  <span>Grams =</span>
+                  <span id="weight-cup-result" class="result-highlight">2.0 Cups</span>
+                </div>
+              </div>
+
+              <div class="converter-row">
+                <label>Liquid Volume:</label>
+                <div class="input-pair">
+                  <input type="number" id="vol-ml" value="240" class="paper-input" placeholder="ml" />
+                  <span>ml =</span>
+                  <span id="vol-fl-result" class="result-highlight">8.1 fl oz</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- CHAPTER 10 / BACK COVER & FOOTER -->
+    <footer id="back-cover" class="cookbook-footer">
+      <div class="footer-paper-wrapper">
+        <div class="footer-content">
+          <div class="wax-seal footer-seal">
+            <span class="seal-icon">🍷</span>
+            <span class="seal-text">Belly's Kitchen</span>
+          </div>
+
+          <h2 class="footer-title">Tour de Table</h2>
+          <p class="footer-quote">"A recipe is a love letter written to the future."</p>
+
+          <div class="footer-links">
+            <a href="#cover" class="footer-link">Back to Cover ↑</a>
+            <a href="#vault" class="footer-link">Explore All Recipes</a>
+            <a href="#notebook" class="footer-link">Kitchen Notes</a>
+          </div>
+
+          <div class="footer-credit">
+            <p>© <span id="current-year">2026</span> Belly's Kitchen. Crafted with love, flour, and natural ingredients.</p>
+            <p class="editorial-tagline">Award-Winning Interactive Cookbook Experience</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+
+    <!-- FULL RECIPE JOURNAL MODAL -->
+    <div id="recipe-modal" class="recipe-modal" aria-hidden="true">
+      <div class="modal-backdrop" id="modal-backdrop"></div>
+      <div class="modal-dialog paper-card">
+        <button id="modal-close-btn" class="modal-close-btn" aria-label="Close Recipe Modal">&times;</button>
+        <div id="modal-content-body" class="modal-body">
+          <!-- Populated by JavaScript dynamically -->
+        </div>
+      </div>
+    </div>
+
+
+    <!-- POLAROID MEMORY LIGHTBOX MODAL -->
+    <div id="polaroid-lightbox" class="polaroid-lightbox" aria-hidden="true">
+      <div class="lightbox-backdrop" id="lightbox-backdrop"></div>
+      <div class="lightbox-dialog">
+        <button id="lightbox-close-btn" class="close-btn" aria-label="Close Lightbox">&times;</button>
+        <div class="lightbox-polaroid">
+          <img id="lightbox-img" src="" alt="Memory Image" class="lightbox-img" />
+          <div class="lightbox-caption-box">
+            <h3 id="lightbox-title" class="lightbox-title">Memory Title</h3>
+            <p id="lightbox-story" class="lightbox-story">Memory storytelling paragraph...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Back to Top Ribbon -->
+    <button id="back-to-top-btn" class="back-to-top-btn" aria-label="Back to top of Cookbook">
+      <span>Top 🔖</span>
+    </button>
+
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+  </body>
+</html>
+
+
